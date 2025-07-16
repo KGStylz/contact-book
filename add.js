@@ -1,0 +1,1 @@
+// JavaScript to handle adding new contact (placeholder)

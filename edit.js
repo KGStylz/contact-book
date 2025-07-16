@@ -1,0 +1,1 @@
+// JavaScript to handle editing contact (placeholder)

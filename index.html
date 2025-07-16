@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Contact Book</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <h1>Contact Book</h1>
+  <div class="controls">
+    <button onclick="window.location.href='index.html'">🏠 Home</button>
+    <input type="text" id="searchInput" placeholder="Search contacts..." />
+    <button id="refresh">🔄 Refresh</button>
+    <button onclick="window.location.href='addContacts.html'">➕ Add Contact</button>
+  </div>
+  <div id="table">Contacts loading...</div>
+  <div class="pagination">
+    <button id="prevPage">⬅ Prev</button>
+    <span id="pageIndicator">Page 1</span>
+    <button id="nextPage">Next ➡</button>
+  </div>
+  <script src="config.js"></script>
+  <script src="index.js"></script>
+</body>
+</html>

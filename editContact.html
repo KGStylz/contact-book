@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Edit Contact</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body onload="getContact()">
+  <h1>Edit Contact</h1>
+  <div class="controls">
+    <button onclick="window.location.href='index.html'">🏠 Home</button>
+  </div>
+  <div id="editFormContainer">
+    <div id="avatarImage"></div>
+    <form id="editContactForm">
+      <input type="text" id="firstName" placeholder="First Name" readonly />
+      <input type="text" id="lastName" placeholder="Last Name" readonly />
+      <input type="email" id="email" placeholder="Email" readonly />
+      <input type="tel" id="mobile" placeholder="Mobile Number" readonly />
+      <input type="text" id="avatar" placeholder="Avatar file name (e.g. john.jpg)" readonly />
+      <button type="button" onclick="editContact()">✏️ Enable Editing</button>
+      <button id="submitForm" type="submit" disabled>💾 Save Changes</button>
+    </form>
+  </div>
+  <script src="config.js"></script>
+  <script src="edit.js"></script>
+</body>
+</html>

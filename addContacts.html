@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Add Contact</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <h1>Add New Contact</h1>
+  <div class="controls">
+    <button onclick="window.location.href='index.html'">🏠 Back to Contact List</button>
+  </div>
+  <div id="addFormContainer">
+    <form id="addContactForm">
+      <input type="text" id="firstname" placeholder="First Name" required />
+      <input type="text" id="lastname" placeholder="Last Name" required />
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="tel" id="mobile" placeholder="Mobile Number" required />
+      <input type="text" id="avatar" placeholder="Avatar file name (e.g. john.jpg)" required />
+      <button type="submit">Save Contact</button>
+    </form>
+  </div>
+  <script src="config.js"></script>
+  <script src="add.js"></script>
+</body>
+</html>

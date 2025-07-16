@@ -1,0 +1,1 @@
+// JavaScript to handle fetching and displaying contacts (placeholder)
