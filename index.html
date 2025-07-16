@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Contact Book</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <h1>Contact Book</h1>
+  <div class="controls">
+    <button onclick="window.location.href='index.html'">🏠 Home</button>
+    <input type="text" id="searchInput" placeholder="Search contacts..." />
+    <button id="refresh">🔄 Refresh</button>
+    <button onclick="window.location.href='addContacts.html'">➕ Add Contact</button>
+  </div>
+  <div id="table">Contacts loading...</div>
+  <div class="pagination">
+    <button id="prevPage">⬅ Prev</button>
+    <span id="pageIndicator">Page 1</span>
+    <button id="nextPage">Next ➡</button>
+  </div>
+  <script src="config.js"></script>
+  <script>
+    let allContacts = [];
+    let currentPage = 1;
+    const perPage = 5;
+
+    document.addEventListener("DOMContentLoaded", () => {
+      fetchContacts();
+      document.getElementById("refresh").addEventListener("click", fetchContacts);
+      document.getElementById("searchInput").addEventListener("input", filterContacts);
+      document.getElementById("prevPage").addEventListener("click", () => changePage(-1));
+      document.getElementById("nextPage").addEventListener("click", () => changePage(1));
+    });
+
+    function fetchContacts() {
+      fetch(`${rootpath}controller/get-contacts/?apiKey=${api}`)
+        .then(res => res.json())
+        .then(data => {
+          allContacts = data;
+          currentPage = 1;
+          displayOutput(data);
+        })
+        .catch(err => {
+          console.error(err);
+          document.getElementById("table").innerText = "Failed to load contacts.";
+        });
+    }
+
+    function displayOutput(data) {
+      const start = (currentPage - 1) * perPage;
+      const end = start + perPage;
+      const pageData = data.slice(start, end);
+      let output = `
+        <table>
+          <thead>
+            <tr>
+              <th>Avatar</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Email</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+      for (let a of pageData) {
+        const id = a.id;
+        output += `
+          <tr>
+            <td><img src="${rootpath}controller/uploads/${a.avatar}" class="avatar" /></td>
+            <td>${a.firstname}</td>
+            <td>${a.lastname}</td>
+            <td>${a.email}</td>
+            <td>
+              <button class="editBtn" onclick="editContact(${id})">✏️ Edit</button>
+              <button class="deleteBtn" data-id="${id}">🗑 Delete</button>
+            </td>
+          </tr>`;
+      }
+      output += "</tbody></table>";
+      document.getElementById("table").innerHTML = output;
+      document.getElementById("pageIndicator").innerText = `Page ${currentPage}`;
+      document.querySelectorAll(".deleteBtn").forEach(btn => {
+        btn.addEventListener("click", function () {
+          const id = this.getAttribute("data-id");
+          if (confirm("Are you sure you want to delete this contact?")) {
+            deleteContact(id);
+          }
+        });
+      });
+    }
+
+    function filterContacts() {
+      const term = document.getElementById("searchInput").value.toLowerCase();
+      const filtered = allContacts.filter(c =>
+        (c.firstname + " " + c.lastname + " " + c.email).toLowerCase().includes(term)
+      );
+      currentPage = 1;
+      displayOutput(filtered);
+    }
+
+    function changePage(direction) {
+      const totalPages = Math.ceil(allContacts.length / perPage);
+      const newPage = currentPage + direction;
+      if (newPage >= 1 && newPage <= totalPages) {
+        currentPage = newPage;
+        displayOutput(allContacts);
+      }
+    }
+
+    function deleteContact(id) {
+      fetch(`${rootpath}controller/delete-contact/?apiKey=${api}&id=${id}`, { method: "GET" })
+        .then(res => res.text())
+        .then(result => {
+          if (result === "1") {
+            alert("Contact deleted!");
+            fetchContacts();
+          } else {
+            alert("Failed to delete contact: " + result);
+          }
+        })
+        .catch(err => {
+          console.error("Error deleting contact:", err);
+          alert("Error occurred while deleting contact.");
+        });
+    }
+
+    function editContact(id) {
+      window.location.href = `editContact.html?id=${id}`;
+    }
+  </script>
+</body>
+</html>

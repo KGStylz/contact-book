@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Add Contact</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <h1>Add New Contact</h1>
+  <div class="controls">
+    <button onclick="window.location.href='index.html'">🏠 Back to Contact List</button>
+  </div>
+  <div id="addFormContainer">
+    <form id="addContactForm">
+      <input type="text" id="firstname" placeholder="First Name" required />
+      <input type="text" id="lastname" placeholder="Last Name" required />
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="tel" id="mobile" placeholder="Mobile Number" required />
+      <input type="text" id="avatar" placeholder="Avatar file name (e.g. john.jpg)" required />
+      <button type="submit">Save Contact</button>
+    </form>
+  </div>
+  <script src="config.js"></script>
+  <script>
+    document.getElementById("addContactForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const newContact = {
+        apiKey: api,
+        firstname: document.getElementById("firstname").value,
+        lastname: document.getElementById("lastname").value,
+        email: document.getElementById("email").value,
+        mobile: document.getElementById("mobile").value,
+        avatar: document.getElementById("avatar").value
+      };
+      fetch(`${rootpath}controller/add-contact/`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newContact)
+      })
+        .then(res => res.text())
+        .then(result => {
+          if (result === "1") {
+            alert("Contact added!");
+            document.getElementById("addContactForm").reset();
+            window.location.href = "index.html";
+          } else {
+            alert("Failed to add contact: " + result);
+          }
+        });
+    });
+  </script>
+</body>
+</html>
